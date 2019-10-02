@@ -11,14 +11,15 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class HomeActivity extends AppCompatActivity {
-Button btnLogout;
-FirebaseAuth mFirebaseAuth;
-private FirebaseAuth.AuthStateListener mAuthStateListener;
+public class Welcome extends AppCompatActivity {
+    private Button btnLogout;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_welcome);
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mFirebaseAuth.getCurrentUser();
         TextView welcomeText = findViewById(R.id.welcome);
@@ -30,18 +31,16 @@ private FirebaseAuth.AuthStateListener mAuthStateListener;
         }
         btnLogout = findViewById(R.id.logout);
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intToMain = new Intent(HomeActivity.this,MainActivity.class);
-                startActivity(intToMain);
-            }
+        btnLogout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intToMain = new Intent(Welcome.this, SignUp.class);
+            startActivity(intToMain);
         });
 
     }
+
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        finish();
     }
 }
