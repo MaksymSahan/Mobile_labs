@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">YoutubeTest</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="sign_in_message">Already have an account? Sign In here</string>
+    <string name="sign_up_message">Not registered? Sign Up here</string>
+    <string name="empty">Empty field !</string>
+
+    <string name="phonePattern">[+]380[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]</string>
+    <string name="passwordPattern">.{8,}</string>
+    <string name="emailPattern">[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+</string>
+
+</resources>
