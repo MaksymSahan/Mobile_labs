@@ -13,15 +13,16 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Welcome extends AppCompatActivity {
     private Button btnLogout;
-    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        auth = FirebaseAuth.getInstance();
+        Button nextBtn = findViewById(R.id.home_activity_nextBtn);
+        FirebaseUser user = auth.getCurrentUser();
         TextView welcomeText = findViewById(R.id.welcome);
         if (user != null) {
             final String username = user.getDisplayName();
@@ -36,7 +37,7 @@ public class Welcome extends AppCompatActivity {
             Intent intToMain = new Intent(Welcome.this, SignUp.class);
             startActivity(intToMain);
         });
-
+        nextBtn.setOnClickListener(view -> startActivity(new Intent(Welcome.this, DataList.class)));
     }
 
     @Override

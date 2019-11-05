@@ -1,19 +1,14 @@
 package com.nulp.youtubetest;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -22,7 +17,7 @@ public class SignIn extends AppCompatActivity {
     private EditText password;
     private Button btnSignIn;
     private TextView tvSignUp;
-    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
@@ -30,7 +25,7 @@ public class SignIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mFirebaseAuth = mFirebaseAuth.getInstance();
+        auth = getApplicationEx().getAuth();
         emailId = findViewById(R.id.email);
         password = findViewById(R.id.password);
         tvSignUp = findViewById(R.id.sign_up_message);
@@ -41,7 +36,7 @@ public class SignIn extends AppCompatActivity {
         final String passwordPatt = getString(R.string.passwordPattern);
 
         mAuthStateListener = firebaseAuth -> {
-            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            FirebaseUser mFirebaseUser = auth.getCurrentUser();
             if (mFirebaseUser != null) {
                 Toast.makeText(SignIn.this, "You are logged in!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(SignIn.this, Welcome.class);
@@ -68,7 +63,7 @@ public class SignIn extends AppCompatActivity {
             } else if (email.isEmpty() && pwd.isEmpty()) {
                 Toast.makeText(SignIn.this, "Empty fields", Toast.LENGTH_SHORT).show();
             } else if (!(email.isEmpty() && pwd.isEmpty())) {
-                mFirebaseAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(SignIn.this, task -> {
+                auth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(SignIn.this, task -> {
                     if (!task.isSuccessful()) {
                         Toast.makeText(SignIn.this, "Error!, Login again.", Toast.LENGTH_SHORT).show();
                     } else {
@@ -90,6 +85,10 @@ public class SignIn extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        auth.addAuthStateListener(mAuthStateListener);
+    }
+
+    private ApplicationEx getApplicationEx() {
+        return ((ApplicationEx) getApplication());
     }
 }

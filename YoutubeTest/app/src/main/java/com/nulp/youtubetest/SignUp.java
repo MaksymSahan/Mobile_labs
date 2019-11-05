@@ -1,20 +1,14 @@
 package com.nulp.youtubetest;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -27,14 +21,14 @@ public class SignUp extends AppCompatActivity {
     private EditText phoneField;
     private Button btnSignUp;
     private TextView tvSignIn;
-    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFirebaseAuth = mFirebaseAuth.getInstance();
+        auth = getApplicationEx().getAuth();
         nameField = findViewById(R.id.input_name);
         phoneField = findViewById(R.id.phone);
         emailId = findViewById(R.id.email);
@@ -88,10 +82,10 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void registerUser() {
-        mFirebaseAuth.createUserWithEmailAndPassword(emailId.getText().toString(),
+        auth.createUserWithEmailAndPassword(emailId.getText().toString(),
                 password.getText().toString()).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                FirebaseUser user = auth.getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(nameField.getText().toString()).build();
                 user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
@@ -107,5 +101,9 @@ public class SignUp extends AppCompatActivity {
                         task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private ApplicationEx getApplicationEx() {
+        return ((ApplicationEx) getApplication());
     }
 }
