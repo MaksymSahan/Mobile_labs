@@ -34,12 +34,6 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         return capabilities != null &&
                 (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
                         capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
-/*        if (cm != null) {
-            NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
-            return capabilities != null &&
-                    (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
-        }
-        return false;*/
+
     }
 }
