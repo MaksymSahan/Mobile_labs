@@ -26,7 +26,7 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sign_up);
 
         auth = getApplicationEx().getAuth();
         nameField = findViewById(R.id.input_name);
@@ -90,7 +90,7 @@ public class SignUp extends AppCompatActivity {
                         .setDisplayName(nameField.getText().toString()).build();
                 user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
-                        startActivity(new Intent(SignUp.this, Welcome.class));
+                        startActivity(new Intent(SignUp.this, MainActivity.class));
                         Toast.makeText(SignUp.this,
                                 "Registered successfully", Toast.LENGTH_LONG).show();
                     }
