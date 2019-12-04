@@ -43,8 +43,8 @@ public class ProfileFragment extends Fragment {
     private TextView email;
     private ImageView profilePicture;
     private FirebaseUser user;
-    private StorageReference Folder;
-    private StorageReference ImageName;
+    private StorageReference folder;
+    private StorageReference imageName;
 
     @Nullable
     @Override
@@ -68,21 +68,21 @@ public class ProfileFragment extends Fragment {
 
     private void onPressLogoutBtn() {
         auth.signOut();
-        Intent i = new Intent(getActivity(), SignIn.class);
-        startActivity(i);
+        Intent intent = new Intent(getActivity(), SignIn.class);
+        startActivity(intent);
         Objects.requireNonNull(getActivity()).overridePendingTransition(0, 0);
     }
 
     private void onPressEmailUpdateBtn() {
         String newEmail = Objects.requireNonNull(newEmailField.getText()).toString().trim();
-        if (isEmailValid(newEmail)){
+        if (isEmailValid(newEmail)) {
             updateEmail(user, newEmail);
         }
     }
 
     private void onPressUsernameUpdateBtn() {
         String newUsername = Objects.requireNonNull(newUsernameField.getText()).toString().trim();
-        if (isUsernameValid(newUsername)){
+        if (isUsernameValid(newUsername)) {
             username.setText(newUsername);
             updateUsername(user, newUsername);
         }
@@ -93,10 +93,10 @@ public class ProfileFragment extends Fragment {
         if (user != null) {
             username.setText(user.getDisplayName());
             email.setText(user.getEmail());
-            ImageName = Folder.child(user.getUid() + ".jpg");
+            imageName = folder.child(user.getUid() + ".jpg");
             placeImage();
         } else {
-            Toast.makeText(getActivity(),getString(R.string.error),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -104,17 +104,17 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1){
-            if (resultCode == RESULT_OK){
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 Uri ImageData = Objects.requireNonNull(data).getData();
-                ImageName.putFile(Objects.requireNonNull(ImageData)).addOnSuccessListener(taskSnapshot -> Toast.makeText(getActivity(),getString(R.string.image_uploaded),Toast.LENGTH_SHORT).show());
+                imageName.putFile(Objects.requireNonNull(ImageData)).addOnSuccessListener(taskSnapshot -> Toast.makeText(getActivity(), getString(R.string.image_uploaded), Toast.LENGTH_SHORT).show());
 
                 placeImage();
             }
         }
     }
 
-    private void initViews(View root){
+    private void initViews(View root) {
         auth = FirebaseAuth.getInstance();
         newUsernameLayout = root.findViewById(R.id.fragment_profile_layout_new_username);
         newUsernameField = root.findViewById(R.id.fragment_profile_new_username);
@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
         emailSubmitBtn = root.findViewById(R.id.email_submit_btn);
         pictureBtn = root.findViewById(R.id.upload_pic);
         profilePicture = root.findViewById(R.id.profile_picture_image_view);
-        Folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
+        folder = FirebaseStorage.getInstance().getReference().child("ImageFolder");
     }
 
     private void uploadProfilePicture() {
@@ -136,26 +136,26 @@ public class ProfileFragment extends Fragment {
         startActivityForResult(intent, 1);
     }
 
-    private void placeImage(){
-        ImageName.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri.toString()).into(profilePicture));
+    private void placeImage() {
+        imageName.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri.toString()).into(profilePicture));
     }
 
-    private void updateUsername(FirebaseUser user, String newName){
+    private void updateUsername(FirebaseUser user, String newName) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(newName)
                 .build();
 
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        Toast.makeText(getActivity(),getString(R.string.username_updated), Toast.LENGTH_SHORT).show();
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getActivity(), getString(R.string.username_updated), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void updateEmail(FirebaseUser user, final String newEmail){
+    private void updateEmail(FirebaseUser user, final String newEmail) {
         user.updateEmail(newEmail).addOnCompleteListener(task -> {
-            Toast.makeText(getActivity(),getString(R.string.email_updated),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.email_updated), Toast.LENGTH_SHORT).show();
             email.setText(newEmail);
         });
     }

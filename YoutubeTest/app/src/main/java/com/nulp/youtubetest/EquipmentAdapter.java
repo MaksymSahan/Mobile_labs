@@ -44,7 +44,6 @@ public class EquipmentAdapter extends RecyclerView.Adapter<EquipmentAdapter.Equi
         holder.workingArea.setText(equipmentList.get(position).getWorkingArea());
         holder.description.setText(equipmentList.get(position).getDescription());
         holder.parentLayout.setOnClickListener(view -> openItemDetails(position));
-
     }
 
     @Override
