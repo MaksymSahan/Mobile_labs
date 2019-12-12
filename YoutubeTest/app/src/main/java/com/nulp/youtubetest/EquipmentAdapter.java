@@ -26,6 +26,10 @@ public class EquipmentAdapter extends RecyclerView.Adapter<EquipmentAdapter.Equi
         this.context = context;
     }
 
+    public EquipmentAdapter(List<Equipment> equipmentList) {
+        this.equipmentList = equipmentList;
+    }
+
     @NonNull
     @Override
     public EquipmentAdapter.EquipmentViewHolder onCreateViewHolder(@NonNull final ViewGroup parent,
